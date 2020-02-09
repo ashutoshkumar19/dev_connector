@@ -1,4 +1,5 @@
 {
   "mongodb_Atlas_URI": "mongodb+srv://ash123:ash123@devconnector-lrxpi.mongodb.net/test?retryWrites=true&w=majority",
-  "mLab_db_URI": "mongodb://ash123:ash123@ds047447.mlab.com:47447/dev-connector-network"
+  "mLab_db_URI": "mongodb://ash123:ash123@ds047447.mlab.com:47447/dev-connector-network",
+  "jwtSecret": "mysecrettoken"
 }
