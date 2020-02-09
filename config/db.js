@@ -1,12 +1,14 @@
 const mongoose = require('mongoose');
 const config = require('config');
-const db = config.get('mongoURI');
+const mongodb_Atlas = config.get('mongodb_Atlas_URI');
+const mLab_db = config.get('mLab_db_URI');
 
 const connectDB = async () => {
   try {
-    await mongoose.connect(db, {
+    await mongoose.connect(mongodb_Atlas, {
       useNewUrlParser: true,
-      useUnifiedTopology: true
+      useUnifiedTopology: true,
+      useCreateIndex: true
     });
     console.log('MongoDB connected...');
   } catch (error) {
