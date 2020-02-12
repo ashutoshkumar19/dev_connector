@@ -8,7 +8,7 @@ const { check, validationResult } = require('express-validator');
 
 const User = require('../../models/User.model');
 
-// @route   POST api/users
+// @route   POST api/user
 // @desc    Register user
 // @access  Public
 router.post(
@@ -18,10 +18,7 @@ router.post(
       .not()
       .isEmpty(),
     check('email', 'Please enter a valid email').isEmail(),
-    check(
-      'password',
-      'Please enter a password with 6 or more characters'
-    ).isLength({
+    check('password', 'Please enter a password with 6 or more characters').isLength({
       min: 6
     })
   ],
@@ -37,9 +34,7 @@ router.post(
       // See if user exists
       let user = await User.findOne({ email });
       if (user) {
-        return res
-          .status(400)
-          .json({ errors: [{ msg: 'User already exists' }] });
+        return res.status(400).json({ errors: [{ msg: 'User already exists' }] });
       }
 
       // Get users gravatar
@@ -69,16 +64,11 @@ router.post(
         }
       };
 
-      jwt.sign(
-        payload,
-        config.get('jwtSecret'),
-        { expiresIn: 36000 },
-        (err, token) => {
-          if (err) throw err;
+      jwt.sign(payload, config.get('jwtSecret'), { expiresIn: 36000 }, (err, token) => {
+        if (err) throw err;
 
-          res.json({ token });
-        }
-      );
+        res.json({ token });
+      });
 
       // res.send('User registered');
     } catch (err) {
