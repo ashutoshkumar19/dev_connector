@@ -41,5 +41,3 @@ const mapStateToProps = state => ({
 });
 
 export default connect(mapStateToProps)(Landing);
-
-// export default Landing;
