@@ -7,6 +7,7 @@ const { check, validationResult } = require('express-validator');
 
 const Profile = require('../../models/Profile.model');
 const User = require('../../models/User.model');
+const Post = require('../../models/Post.model');
 
 // @route   GET api/profile/me
 // @desc    Get current user's profile
@@ -162,8 +163,8 @@ router.delete('/', auth, async (req, res) => {
       return res.json({ msg: 'User not found' });
     }
 
-    // @todo - remove users posts
-
+    // Remove users posts
+    await Post.deleteMany({ user: req.user.id });
     // Remove profile
     await Profile.findOneAndRemove({ user: req.user.id });
     // Remove user
@@ -207,15 +208,7 @@ router.put(
       return res.json({ msg: 'Profile not found' });
     }
 
-    const {
-      title,
-      company,
-      location,
-      from,
-      to,
-      current,
-      description
-    } = req.body;
+    const { title, company, location, from, to, current, description } = req.body;
 
     const newExp = {
       title: title,
@@ -294,15 +287,7 @@ router.put(
       return res.json({ msg: 'Profile not found' });
     }
 
-    const {
-      school,
-      degree,
-      fieldofstudy,
-      from,
-      to,
-      current,
-      description
-    } = req.body;
+    const { school, degree, fieldofstudy, from, to, current, description } = req.body;
 
     const newEdu = {
       school: school,
@@ -334,9 +319,7 @@ router.delete('/education/:edu_id', auth, async (req, res) => {
     const profile = await Profile.findOne({ user: req.user.id });
 
     // Get remove index
-    const removeIndex = profile.education
-      .map(item => item.id)
-      .indexOf(req.params.edu_id);
+    const removeIndex = profile.education.map(item => item.id).indexOf(req.params.edu_id);
 
     profile.education.splice(removeIndex, 1);
     await profile.save();
@@ -355,7 +338,7 @@ router.get('/github/:username', (req, res) => {
     const options = {
       uri: `https://api.github.com/users/${
         req.params.username
-      }/repos?per_page=10&sort=created:asc&client_id=${config.get(
+      }/repos?per_page=25&sort=created:asc&client_id=${config.get(
         'githubClientId'
       )}&clientSecret=${config.get('githubSecret')}`,
       method: 'GET',
