@@ -218,13 +218,12 @@ router.delete('/comment/:post_id/:comment_id', auth, async (req, res) => {
       return res.status(401).json({ msg: 'User NOT authorized' });
     }
 
-    // Get remove index
-    const removeIndex = post.comments
-      .map(comment => comment.user.toString())
-      .indexOf(req.user.id);
-    post.comments.splice(removeIndex, 1);
-    await post.save();
-    res.json(post.comments);
+    await Post.findByIdAndUpdate(req.params.post_id, {
+      $pull: { comments: { _id: req.params.comment_id } }
+    });
+
+    const updatedPost = await Post.findById(req.params.post_id);
+    return res.json(updatedPost.comments);
   } catch (err) {
     console.error(err.message);
     if (err.kind == 'ObjectId') {

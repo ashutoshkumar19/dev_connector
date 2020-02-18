@@ -137,6 +137,7 @@ img {
   margin-right: 0.5rem;
   transition: opacity 0.2s ease-in;
   outline: none;
+  border-radius: 20px;
 }
 
 .badge {
@@ -466,6 +467,9 @@ button {
   grid-template-columns: 1fr 4fr;
   grid-gap: 2rem;
   align-items: center;
+  border-radius: 10px;
+  border-color: #f0f0f0;
+  box-shadow: -3px 3px 10px 0px #a0a0a0;
 }
 
 .post > div:first-child {
