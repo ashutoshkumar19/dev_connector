@@ -1,7 +1,7 @@
 {
-  "mongodb_Atlas_URI": "",
-  "mLab_db_URI": "",
+  "mongodb_Atlas_URI": "mongodb+srv://ash123:ash123@devconnector-lrxpi.mongodb.net/test?retryWrites=true&w=majority",
+  "mLab_db_URI": "mongodb://ash123:ash123@ds047447.mlab.com:47447/dev-connector-network",
   "jwtSecret": "mysecrettoken",
-  "githubClientId": "",
-  "githubSecret": ""
+  "githubClientId": "98ed11cf087ea2b1fe1c",
+  "githubSecret": "1787fb4dbedbd086c03c27a9d5492fefe2d52006"
 }

@@ -12,13 +12,15 @@ Add "default.json" file in config/ directory.
 
 ```
 
-***For Production***
+**_For Production_**
 Add following in scripts section of 'package.json':
+
 ```
-  "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client" 
+  "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"
 ```
 
 Add Following Code in server.js file:
+
 ```
 const express = require('express');
 const connectDB = require('./config/db');
