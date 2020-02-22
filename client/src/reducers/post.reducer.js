@@ -25,12 +25,14 @@ export default function(state = initialState, action) {
       return {
         ...state,
         posts: payload,
+        post: null,
         loading: false
       };
 
     case GET_POST:
       return {
         ...state,
+        // posts: [],
         post: payload,
         loading: false
       };

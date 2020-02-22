@@ -401,7 +401,7 @@ router.put(
   [
     auth,
     [
-      check('newName', 'Name cannot be blank')
+      check('name', 'Name cannot be blank')
         .not()
         .isEmpty()
     ]
@@ -412,15 +412,15 @@ router.put(
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { newName } = req.body;
+    const { name } = req.body;
     try {
       let user = await User.findOne({ _id: req.user.id });
 
       if (user) {
         // Update
-        user.name = newName;
+        user.name = name;
         await user.save();
-        res.json(newName);
+        res.json(name);
       } else console.log('user not found');
     } catch (err) {
       console.error(err.message);

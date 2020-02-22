@@ -7,11 +7,18 @@ import { getPosts } from '../../actions/post.action';
 import PostForm from './PostForm.component';
 
 const Posts = ({ getPosts, post: { posts, loading } }) => {
+  // useEffect(() => {
+  //   getPosts();
+  // }, [getPosts]);
+
   useEffect(() => {
-    getPosts();
+    const interval = setInterval(() => {
+      getPosts();
+    }, 3000);
+    return () => clearInterval(interval);
   }, [getPosts]);
 
-  return loading ? (
+  return loading || posts.length === 0 ? (
     <Spinner />
   ) : (
     <Fragment>

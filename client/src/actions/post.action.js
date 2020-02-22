@@ -104,9 +104,9 @@ export const deletePost = post_id => async dispatch => {
 // Get single Post
 export const getPost = post_id => async dispatch => {
   try {
-    dispatch({
-      type: CLEAR_POST
-    });
+    // dispatch({
+    //   type: CLEAR_POST
+    // });
     const res = await axios.get(`/api/post/${post_id}`);
     dispatch({
       type: GET_POST,

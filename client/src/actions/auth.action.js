@@ -96,7 +96,7 @@ export const logout = () => dispatch => {
 };
 
 // Update avatar
-export const updateAvatar = formData => async dispatch => {
+export const updateAvatar = avatar => async dispatch => {
   try {
     const config = {
       headers: {
@@ -104,7 +104,9 @@ export const updateAvatar = formData => async dispatch => {
       }
     };
 
-    const res = await axios.put('/api/profile/avatar', formData, config);
+    const body = JSON.stringify({ avatar });
+
+    const res = await axios.put('/api/profile/avatar', body, config);
 
     dispatch({
       type: GET_AVATAR,
@@ -137,15 +139,16 @@ export const updateAvatar = formData => async dispatch => {
 };
 
 // Edit name
-export const editName = newNameData => async dispatch => {
+export const editName = name => async dispatch => {
   try {
     const config = {
       headers: {
         'Content-Type': 'application/json'
       }
     };
+    const body = JSON.stringify({ name });
 
-    const res = await axios.put('/api/profile/name', newNameData, config);
+    const res = await axios.put('/api/profile/name', body, config);
 
     dispatch({
       type: GET_NAME,

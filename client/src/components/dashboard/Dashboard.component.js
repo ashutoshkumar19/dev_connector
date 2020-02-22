@@ -17,8 +17,7 @@ const Dashboard = ({
   auth: { user },
   profile: { profile, loading }
 }) => {
-  const [formData, setFormData] = useState({ avatar: '' });
-  const [newNameData, setNewNameData] = useState({ newName: '' });
+  const [formData, setFormData] = useState({ avatar: '', newName: '' });
 
   const [displayAvatarEditForm, toggleAvatarEditForm] = useState(false);
 
@@ -28,25 +27,21 @@ const Dashboard = ({
     getCurrentProfile();
   }, [getCurrentProfile]);
 
-  const { avatar } = formData;
-
-  const { newName } = newNameData;
+  const { avatar, newName } = formData;
 
   const onChange = e => setFormData({ ...formData, [e.target.name]: e.target.value });
 
-  const onNameChange = e => setNewNameData({ ...newNameData, [e.target.name]: e.target.value });
-
-  const onSubmit = e => {
+  const changeAvatar = e => {
     e.preventDefault();
-    updateAvatar(formData);
+    updateAvatar(avatar);
     setFormData({ avatar: '' });
     toggleAvatarEditForm(!displayAvatarEditForm);
   };
 
   const changeName = e => {
     e.preventDefault();
-    editName(newNameData);
-    setNewNameData({ newName: '' });
+    editName(newName);
+    setFormData({ newName: '' });
     toggleNameEditForm(!displayNameEditForm);
   };
 
@@ -69,30 +64,30 @@ const Dashboard = ({
           </div>
           <div>
             <p className='lead'>{user && user.name}</p>
-            <button
-              className='btn btn-primary edit-name-btn'
-              onClick={() => toggleNameEditForm(!displayNameEditForm)}
-            >
-              Edit
-            </button>
-            {displayNameEditForm && (
-              <form className='name-edit-form' onSubmit={e => changeName(e)}>
-                <input
-                  type='text'
-                  name='newName'
-                  placeholder='Enter name'
-                  value={newName}
-                  onChange={e => onNameChange(e)}
-                />
-                <button className='btn btn-success' type='submit'>
-                  Save
-                </button>
-              </form>
-            )}
           </div>
+          <button
+            className='btn btn-primary edit-name-btn'
+            onClick={() => toggleNameEditForm(!displayNameEditForm)}
+          >
+            Edit
+          </button>
+          {displayNameEditForm && (
+            <form className='name-edit-form' onSubmit={e => changeName(e)}>
+              <input
+                type='text'
+                name='newName'
+                placeholder='Enter name'
+                value={newName}
+                onChange={e => onChange(e)}
+              />
+              <button className='btn btn-success name-edit-save' type='submit'>
+                Save
+              </button>
+            </form>
+          )}
         </div>
         {displayAvatarEditForm && (
-          <form className='avatar-edit-form' onSubmit={e => onSubmit(e)}>
+          <form className='avatar-edit-form' onSubmit={e => changeAvatar(e)}>
             <input
               type='text'
               name='avatar'

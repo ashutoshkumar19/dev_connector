@@ -499,6 +499,7 @@ button {
   align-items: flex-end;
   margin-bottom: 15px;
 }
+
 .user-avatar-container {
   width: 75px;
   height: 75px;
@@ -544,11 +545,29 @@ button {
 
 .edit-name-btn {
   padding: 2px 8px;
-  /* position: absolute; */
   cursor: pointer;
   font-size: 10pt;
-  margin-top: -50px;
+  margin-bottom: 23px;
   margin-left: 18px;
+}
+.name-edit-form input {
+  height: 30px;
+  width: 60%;
+  margin-left: 10px;
+  margin-right: 10px;
+  margin-bottom: 23px;
+  border-radius: 10px;
+  outline: none;
+  border: 1px solid #6e6e6e;
+  padding: 0 5px;
+}
+.name-edit-form input:focus,
+.name-edit-form input:active {
+  border: 2px solid #17a2b8;
+}
+
+.name-edit-form .name-edit-save {
+  padding: 3px 8px;
 }
 
 /* Mobile Styles */

@@ -9,8 +9,15 @@ import Spinner from '../layout/Spinner.component';
 import { Link } from 'react-router-dom';
 
 const Post = ({ getPost, post: { post, loading }, match }) => {
+  // useEffect(() => {
+  //   getPost(match.params.id);
+  // }, [getPost]);
+
   useEffect(() => {
-    getPost(match.params.id);
+    const interval = setInterval(() => {
+      getPost(match.params.id);
+    }, 3000);
+    return () => clearInterval(interval);
   }, [getPost]);
 
   return loading || post === null ? (
