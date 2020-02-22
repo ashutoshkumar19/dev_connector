@@ -1,7 +1,8 @@
-import React, { useEffect, Fragment } from 'react';
+import React, { useState, useEffect, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { getCurrentProfile, deleteAccount } from '../../actions/profile.action';
+import { updateAvatar } from '../../actions/auth.action';
 import Spinner from '../layout/Spinner.component';
 import { Link } from 'react-router-dom';
 import DashboardActions from './DashboardActions.component';
@@ -11,21 +12,62 @@ import Education from './Education.component';
 const Dashboard = ({
   getCurrentProfile,
   deleteAccount,
+  updateAvatar,
   auth: { user },
   profile: { profile, loading }
 }) => {
+  const [formData, setFormData] = useState({ avatar: '' });
+
+  const [displayAvatarEditForm, toggleAvatarEditForm] = useState(false);
+
   useEffect(() => {
     getCurrentProfile();
   }, [getCurrentProfile]);
+
+  const { avatar } = formData;
+
+  const onChange = e => setFormData({ ...formData, [e.target.name]: e.target.value });
+
+  const onSubmit = e => {
+    e.preventDefault();
+    updateAvatar(formData);
+    setFormData({ avatar: '' });
+    toggleAvatarEditForm(!displayAvatarEditForm);
+  };
 
   return loading && profile === null ? (
     <Spinner />
   ) : (
     <Fragment>
-      <h1 class='large text-primary'>Dashboard</h1>
-      <p class='lead'>
-        <i class='fas fa-user'></i> Welcome {user && user.name}
-      </p>
+      <h1 className='large text-primary'>Dashboard</h1>
+      <div>
+        <div className='user-container'>
+          <div className='user-avatar-container'>
+            <img className='user-avatar' src={user.avatar} alt={user && user.name} />
+            <button
+              className='btn btn-dark edit-avatar-btn'
+              onClick={() => toggleAvatarEditForm(!displayAvatarEditForm)}
+            >
+              Edit
+            </button>
+          </div>
+          <p className='lead'>{user && user.name}</p>
+        </div>
+        {displayAvatarEditForm && (
+          <form className='avatar-edit-form' onSubmit={e => onSubmit(e)}>
+            <input
+              type='text'
+              name='avatar'
+              placeholder='Enter avatar url'
+              value={avatar}
+              onChange={e => onChange(e)}
+            />
+            <button className='btn btn-success' type='submit'>
+              Save
+            </button>
+          </form>
+        )}
+      </div>
       {profile !== null ? (
         <Fragment>
           <DashboardActions />
@@ -53,7 +95,8 @@ Dashboard.propTypes = {
   getCurrentProfile: PropTypes.func.isRequired,
   deleteAccount: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
-  profile: PropTypes.object.isRequired
+  profile: PropTypes.object.isRequired,
+  updateAvatar: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -61,4 +104,6 @@ const mapStateToProps = state => ({
   profile: state.profile
 });
 
-export default connect(mapStateToProps, { getCurrentProfile, deleteAccount })(Dashboard);
+export default connect(mapStateToProps, { getCurrentProfile, deleteAccount, updateAvatar })(
+  Dashboard
+);

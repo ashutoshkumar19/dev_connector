@@ -7,10 +7,15 @@ import {
   LOGIN_FAIL,
   USER_LOADED,
   AUTH_ERROR,
+  AVATAR_ERROR,
   LOGOUT,
-  CLEAR_PROFILE
+  CLEAR_PROFILE,
+  GET_AVATAR,
+  GET_PROFILE,
+  PROFILE_ERROR
 } from './types';
 import setAuthToken from '../utils/setAuthToken';
+import { getCurrentProfile } from './profile.action';
 
 // Load User
 export const loadUser = () => async dispatch => {
@@ -86,4 +91,45 @@ export const login = (email, password) => async dispatch => {
 export const logout = () => dispatch => {
   dispatch({ type: CLEAR_PROFILE });
   dispatch({ type: LOGOUT });
+};
+
+// Update avatar
+export const updateAvatar = formData => async dispatch => {
+  try {
+    const config = {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    };
+
+    const res = await axios.put('/api/profile/avatar', formData, config);
+
+    dispatch({
+      type: GET_AVATAR,
+      payload: res.data
+    });
+    dispatch(setAlert('Avatar Updated', 'success'));
+
+    try {
+      const res = await axios.get('/api/profile/me');
+      dispatch({
+        type: GET_PROFILE,
+        payload: res.data
+      });
+    } catch (err) {
+      dispatch({ type: CLEAR_PROFILE });
+      dispatch({
+        type: PROFILE_ERROR,
+        payload: { msg: err.response.statusText, status: err.response.status }
+      });
+    }
+  } catch (err) {
+    const errors = err.response.data.errors;
+    if (errors) {
+      errors.forEach(error => dispatch(setAlert(error.msg, 'danger')));
+    }
+    dispatch({
+      type: AVATAR_ERROR
+    });
+  }
 };

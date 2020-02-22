@@ -71,8 +71,7 @@ const EditProfile = ({
     <Fragment>
       <h1 className='large text-primary'>Edit Your Profile</h1>
       <p className='lead'>
-        <i className='fas fa-user'></i> Let's get some information to make your profile
-        stand out
+        <i className='fas fa-user'></i> Let's get some information to make your profile stand out
       </p>
       <small>* = required field</small>
       <form className='form' onSubmit={e => onSubmit(e)}>
@@ -88,9 +87,7 @@ const EditProfile = ({
             <option value='Intern'>Intern</option>
             <option value='Other'>Other</option>
           </select>
-          <small className='form-text'>
-            Give us an idea of where you are at in your career
-          </small>
+          <small className='form-text'>Give us an idea of where you are at in your career</small>
         </div>
         <div className='form-group'>
           <input
@@ -100,9 +97,7 @@ const EditProfile = ({
             value={company}
             onChange={e => onChange(e)}
           />
-          <small className='form-text'>
-            Could be your own company or one you work for
-          </small>
+          <small className='form-text'>Could be your own company or one you work for</small>
         </div>
         <div className='form-group'>
           <input
@@ -164,9 +159,7 @@ const EditProfile = ({
             type='button'
             className='btn btn-light'
           >
-            {displaySocialInputs
-              ? 'Hide Social Network Links'
-              : 'Add Social Network Links'}
+            {displaySocialInputs ? 'Hide Social Network Links' : 'Add Social Network Links'}
           </button>
           <span>Optional</span>
         </div>

@@ -240,9 +240,7 @@ router.delete('/experience/:exp_id', auth, async (req, res) => {
     const profile = await Profile.findOne({ user: req.user.id });
 
     // Get remove index
-    const removeIndex = profile.experience
-      .map(item => item.id)
-      .indexOf(req.params.exp_id);
+    const removeIndex = profile.experience.map(item => item.id).indexOf(req.params.exp_id);
 
     profile.experience.splice(removeIndex, 1);
     await profile.save();
@@ -358,5 +356,41 @@ router.get('/github/:username', (req, res) => {
     res.status(500).send('Server Error');
   }
 });
+
+// @route   PUT api/profile/avatar
+// @desc    Update avatar
+// @access  Private
+router.put(
+  '/avatar',
+  [
+    auth,
+    [
+      check('avatar', 'Avatar URL is required')
+        .not()
+        .isEmpty()
+    ]
+  ],
+  async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    const { avatar } = req.body;
+    try {
+      let user = await User.findOne({ _id: req.user.id });
+
+      if (user) {
+        // Update
+        user.avatar = avatar;
+        await user.save();
+        res.json(avatar);
+      } else console.log('user not found');
+    } catch (err) {
+      console.error(err.message);
+      res.status(500).send('Server Error');
+    }
+  }
+);
 
 module.exports = router;

@@ -494,6 +494,54 @@ button {
   margin-bottom: 0.5rem;
 }
 
+.user-container {
+  display: inline-flex;
+  align-items: flex-end;
+  margin-bottom: 15px;
+}
+.user-avatar-container {
+  width: 75px;
+  height: 75px;
+  margin: 0 5px;
+  display: flex;
+  text-align: center;
+}
+.user-avatar {
+  width: 100%;
+  height: 100%;
+}
+
+.edit-avatar-btn {
+  padding: 2px 8px;
+  position: absolute;
+  cursor: pointer;
+  font-size: 10pt;
+  margin-top: 50px;
+  margin-left: 18px;
+  display: none;
+}
+.user-avatar-container:hover > .edit-avatar-btn {
+  display: flex;
+  opacity: 1;
+}
+
+.avatar-edit-form {
+  margin-bottom: 25px;
+}
+.avatar-edit-form input {
+  height: 35px;
+  width: 55%;
+  margin-right: 10px;
+  border-radius: 10px;
+  outline: none;
+  border: 1px solid #6e6e6e;
+  padding: 0 5px;
+}
+.avatar-edit-form input:focus,
+.avatar-edit-form input:active {
+  border: 2px solid #17a2b8;
+}
+
 /* Mobile Styles */
 @media (max-width: 700px) {
   .container {
