@@ -14,6 +14,7 @@ const Post = ({ getPost, post: { post, loading }, match }) => {
   // }, [getPost]);
 
   useEffect(() => {
+    getPost(match.params.id);
     const interval = setInterval(() => {
       getPost(match.params.id);
     }, 3000);

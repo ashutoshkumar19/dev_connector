@@ -12,6 +12,7 @@ const Posts = ({ getPosts, post: { posts, loading } }) => {
   // }, [getPosts]);
 
   useEffect(() => {
+    getPosts();
     const interval = setInterval(() => {
       getPosts();
     }, 3000);
