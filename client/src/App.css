@@ -542,6 +542,15 @@ button {
   border: 2px solid #17a2b8;
 }
 
+.edit-name-btn {
+  padding: 2px 8px;
+  /* position: absolute; */
+  cursor: pointer;
+  font-size: 10pt;
+  margin-top: -50px;
+  margin-left: 18px;
+}
+
 /* Mobile Styles */
 @media (max-width: 700px) {
   .container {

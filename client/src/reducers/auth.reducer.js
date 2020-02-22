@@ -8,7 +8,9 @@ import {
   LOGOUT,
   ACCOUNT_DELETED,
   GET_AVATAR,
-  AVATAR_ERROR
+  AVATAR_ERROR,
+  GET_NAME,
+  NAME_ERROR
 } from '../actions/types';
 
 const initialState = {
@@ -50,7 +52,18 @@ export default function(state = initialState, action) {
         loading: false
       };
 
+    case GET_NAME:
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          name: payload
+        },
+        loading: false
+      };
+
     case AVATAR_ERROR:
+    case NAME_ERROR:
       return {
         ...state,
         loading: false

@@ -393,4 +393,40 @@ router.put(
   }
 );
 
+// @route   PUT api/profile/name
+// @desc    Update name
+// @access  Private
+router.put(
+  '/name',
+  [
+    auth,
+    [
+      check('newName', 'Name cannot be blank')
+        .not()
+        .isEmpty()
+    ]
+  ],
+  async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    const { newName } = req.body;
+    try {
+      let user = await User.findOne({ _id: req.user.id });
+
+      if (user) {
+        // Update
+        user.name = newName;
+        await user.save();
+        res.json(newName);
+      } else console.log('user not found');
+    } catch (err) {
+      console.error(err.message);
+      res.status(500).send('Server Error');
+    }
+  }
+);
+
 module.exports = router;

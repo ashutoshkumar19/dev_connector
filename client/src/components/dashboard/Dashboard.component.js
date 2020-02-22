@@ -2,7 +2,7 @@ import React, { useState, useEffect, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { getCurrentProfile, deleteAccount } from '../../actions/profile.action';
-import { updateAvatar } from '../../actions/auth.action';
+import { updateAvatar, editName } from '../../actions/auth.action';
 import Spinner from '../layout/Spinner.component';
 import { Link } from 'react-router-dom';
 import DashboardActions from './DashboardActions.component';
@@ -13,12 +13,16 @@ const Dashboard = ({
   getCurrentProfile,
   deleteAccount,
   updateAvatar,
+  editName,
   auth: { user },
   profile: { profile, loading }
 }) => {
   const [formData, setFormData] = useState({ avatar: '' });
+  const [newNameData, setNewNameData] = useState({ newName: '' });
 
   const [displayAvatarEditForm, toggleAvatarEditForm] = useState(false);
+
+  const [displayNameEditForm, toggleNameEditForm] = useState(false);
 
   useEffect(() => {
     getCurrentProfile();
@@ -26,13 +30,24 @@ const Dashboard = ({
 
   const { avatar } = formData;
 
+  const { newName } = newNameData;
+
   const onChange = e => setFormData({ ...formData, [e.target.name]: e.target.value });
+
+  const onNameChange = e => setNewNameData({ ...newNameData, [e.target.name]: e.target.value });
 
   const onSubmit = e => {
     e.preventDefault();
     updateAvatar(formData);
     setFormData({ avatar: '' });
     toggleAvatarEditForm(!displayAvatarEditForm);
+  };
+
+  const changeName = e => {
+    e.preventDefault();
+    editName(newNameData);
+    setNewNameData({ newName: '' });
+    toggleNameEditForm(!displayNameEditForm);
   };
 
   return loading && profile === null ? (
@@ -44,6 +59,7 @@ const Dashboard = ({
         <div className='user-container'>
           <div className='user-avatar-container'>
             <img className='user-avatar' src={user.avatar} alt={user && user.name} />
+
             <button
               className='btn btn-dark edit-avatar-btn'
               onClick={() => toggleAvatarEditForm(!displayAvatarEditForm)}
@@ -51,7 +67,29 @@ const Dashboard = ({
               Edit
             </button>
           </div>
-          <p className='lead'>{user && user.name}</p>
+          <div>
+            <p className='lead'>{user && user.name}</p>
+            <button
+              className='btn btn-primary edit-name-btn'
+              onClick={() => toggleNameEditForm(!displayNameEditForm)}
+            >
+              Edit
+            </button>
+            {displayNameEditForm && (
+              <form className='name-edit-form' onSubmit={e => changeName(e)}>
+                <input
+                  type='text'
+                  name='newName'
+                  placeholder='Enter name'
+                  value={newName}
+                  onChange={e => onNameChange(e)}
+                />
+                <button className='btn btn-success' type='submit'>
+                  Save
+                </button>
+              </form>
+            )}
+          </div>
         </div>
         {displayAvatarEditForm && (
           <form className='avatar-edit-form' onSubmit={e => onSubmit(e)}>
@@ -96,7 +134,8 @@ Dashboard.propTypes = {
   deleteAccount: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
   profile: PropTypes.object.isRequired,
-  updateAvatar: PropTypes.func.isRequired
+  updateAvatar: PropTypes.func.isRequired,
+  editName: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -104,6 +143,9 @@ const mapStateToProps = state => ({
   profile: state.profile
 });
 
-export default connect(mapStateToProps, { getCurrentProfile, deleteAccount, updateAvatar })(
-  Dashboard
-);
+export default connect(mapStateToProps, {
+  getCurrentProfile,
+  deleteAccount,
+  updateAvatar,
+  editName
+})(Dashboard);

@@ -12,6 +12,8 @@ import {
   CLEAR_PROFILE,
   GET_AVATAR,
   GET_PROFILE,
+  GET_NAME,
+  NAME_ERROR,
   PROFILE_ERROR
 } from './types';
 import setAuthToken from '../utils/setAuthToken';
@@ -130,6 +132,47 @@ export const updateAvatar = formData => async dispatch => {
     }
     dispatch({
       type: AVATAR_ERROR
+    });
+  }
+};
+
+// Edit name
+export const editName = newNameData => async dispatch => {
+  try {
+    const config = {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    };
+
+    const res = await axios.put('/api/profile/name', newNameData, config);
+
+    dispatch({
+      type: GET_NAME,
+      payload: res.data
+    });
+    dispatch(setAlert('Name Updated', 'success'));
+
+    try {
+      const res = await axios.get('/api/profile/me');
+      dispatch({
+        type: GET_PROFILE,
+        payload: res.data
+      });
+    } catch (err) {
+      dispatch({ type: CLEAR_PROFILE });
+      dispatch({
+        type: PROFILE_ERROR,
+        payload: { msg: err.response.statusText, status: err.response.status }
+      });
+    }
+  } catch (err) {
+    const errors = err.response.data.errors;
+    if (errors) {
+      errors.forEach(error => dispatch(setAlert(error.msg, 'danger')));
+    }
+    dispatch({
+      type: NAME_ERROR
     });
   }
 };
